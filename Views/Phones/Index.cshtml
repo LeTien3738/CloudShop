@@ -1,0 +1,88 @@
+@model IEnumerable<PhoneStore.Models.Phone>
+@{
+    ViewData["Title"] = "Sản phẩm";
+}
+
+<h1 class="mb-4">📱 Danh sách sản phẩm</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Filter Section -->
+<div class="filter-section">
+    <form method="get" class="row g-3 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label">Tìm kiếm</label>
+            <input type="text" name="searchString" class="form-control" placeholder="Nhập tên điện thoại..." value="@Context.Request.Query["searchString"]" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Thương hiệu</label>
+            <select name="brand" class="form-select">
+                <option value="">Tất cả thương hiệu</option>
+                @foreach (var brand in ViewBag.Brands)
+                {
+                    <option value="@brand" selected="@(Context.Request.Query["brand"] == brand)">@brand</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">🔍 Tìm kiếm</button>
+        </div>
+    </form>
+</div>
+
+<!-- Products Grid -->
+<div class="row g-4">
+    @foreach (var phone in Model)
+    {
+        var discount = 15 + (phone.Id * 5);
+        var oldPrice = phone.Price * (100 + discount) / 100;
+        
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="product-card" onclick="window.location.href='@Url.Action("Details", "Phones", new { id = phone.Id })'" style="cursor: pointer;">
+                <span class="badge-sale">-@discount%</span>
+                
+                <div class="product-image">
+                    @if (!string.IsNullOrEmpty(phone.ImageUrl))
+                    {
+                        <img src="@phone.ImageUrl" alt="@phone.Name" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    }
+                    else
+                    {
+                        <div style="font-size: 80px; color: #ddd;">📱</div>
+                    }
+                </div>
+                
+                <div class="product-info">
+                    <h3 class="product-title">@phone.Name</h3>
+                    
+                    <div class="product-price">
+                        <span class="price-current">@phone.Price.ToString("N0") VNĐ</span>
+                        <span class="price-old">@oldPrice.ToString("N0") VNĐ</span>
+                    </div>
+                    
+                    <p class="text-muted small mb-2">@phone.Specifications</p>
+                    
+                    <div class="product-tags">
+                        <span class="product-tag">@phone.Brand</span>
+                        <span class="product-tag">Còn @phone.Stock sp</span>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="id" value="@phone.Id" />
+                            <button type="submit" class="btn-add-cart" onclick="event.stopPropagation();">
+                                Thêm vào giỏ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

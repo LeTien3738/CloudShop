@@ -1,0 +1,119 @@
+@model PhoneStore.Models.User
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CloudShop</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            height: 100%;
+        }
+        body {
+            min-height: 100%;
+            background: url('https://c4.wallpaperflare.com/wallpaper/923/685/115/violet-evergarden-anime-girls-violet-evergarden-anime-water-wallpaper-preview.jpg') center/cover no-repeat;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+            position: relative;
+            overflow-y: auto;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+        .register-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-card">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" style="color: #667eea;">☁️ CloudShop</h2>
+            <p class="text-muted">Tạo tài khoản mới</p>
+        </div>
+        
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+        
+        <form method="post">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tên đăng nhập *</label>
+                    <input asp-for="Username" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Họ tên *</label>
+                    <input asp-for="FullName" class="form-control" required />
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email *</label>
+                    <input asp-for="Email" type="email" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Số điện thoại *</label>
+                    <input asp-for="Phone" class="form-control" required />
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Địa chỉ</label>
+                <input asp-for="Address" class="form-control" />
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Mật khẩu *</label>
+                    <input asp-for="Password" type="password" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Xác nhận mật khẩu *</label>
+                    <input name="confirmPassword" type="password" class="form-control" required />
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100 btn-lg mb-3">Đăng ký</button>
+            
+            <div class="text-center">
+                <p class="mb-2">Đã có tài khoản? <a asp-action="Login" class="text-decoration-none">Đăng nhập</a></p>
+                <a asp-controller="Home" asp-action="Index" class="text-muted text-decoration-none">← Quay lại trang chủ</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+﻿@model IEnumerable<PhoneStore.Models.Phone>
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<!-- Hero Banner Carousel -->
+<div id="heroBannerCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#heroBannerCarousel" data-bs-slide-to="2"></button>
+    </div>
+    
+    <div class="carousel-inner">
+        <!-- Slide 1: iPhone 17 Pro -->
+        <div class="carousel-item active">
+            <a asp-controller="Phones" asp-action="Index" asp-route-brand="Apple">
+                <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:90/plain/https://dashboard.cellphones.com.vn/storage/690x300_iPhone_17_Pro_Opensale_v3.png" 
+                     class="d-block w-100" alt="iPhone 17 Pro" style="border-radius: 15px; max-height: 500px; object-fit: cover;">
+            </a>
+        </div>
+        
+        <!-- Slide 2: Samsung Z7 -->
+        <div class="carousel-item">
+            <a asp-controller="Phones" asp-action="Index" asp-route-brand="Samsung">
+                <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:90/plain/https://dashboard.cellphones.com.vn/storage/home-z7-1125.png" 
+                     class="d-block w-100" alt="Samsung Z7" style="border-radius: 15px; max-height: 500px; object-fit: cover;">
+            </a>
+        </div>
+        
+        <!-- Slide 3: MacBook Pro M5 -->
+        <div class="carousel-item">
+            <a asp-controller="Phones" asp-action="Index">
+                <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:1036:450/q:90/plain/https://dashboard.cellphones.com.vn/storage/690x300_MacBookProM5_opensale.png" 
+                     class="d-block w-100" alt="MacBook Pro M5" style="border-radius: 15px; max-height: 500px; object-fit: cover;">
+            </a>
+        </div>
+    </div>
+    
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#heroBannerCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#heroBannerCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+<!-- Search Box -->
+<div class="search-box">
+    <form method="get" asp-controller="Phones" asp-action="Index">
+        <div class="input-group">
+            <input type="text" name="searchString" class="form-control" placeholder="🔍 Tìm kiếm điện thoại...">
+            <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+        </div>
+    </form>
+</div>
+
+<!-- Category Tabs -->
+<div class="category-tabs">
+    <a href="?brand=" class="btn">Tất cả</a>
+    <a href="?brand=Apple" class="btn">🍎 Apple</a>
+    <a href="?brand=Samsung" class="btn">📱 Samsung</a>
+    <a href="?brand=Xiaomi" class="btn">⚡ Xiaomi</a>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Products Grid -->
+<div class="row g-4">
+    @foreach (var phone in Model)
+    {
+        var discount = 15 + (phone.Id * 5);
+        var oldPrice = phone.Price * (100 + discount) / 100;
+        
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="product-card" onclick="window.location.href='@Url.Action("Details", "Phones", new { id = phone.Id })'" style="cursor: pointer;">
+                <span class="badge-sale">-@discount%</span>
+                
+                <div class="product-image">
+                    @if (!string.IsNullOrEmpty(phone.ImageUrl))
+                    {
+                        <img src="@phone.ImageUrl" alt="@phone.Name" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    }
+                    else
+                    {
+                        <div style="font-size: 80px; color: #ddd;">📱</div>
+                    }
+                </div>
+                
+                <div class="product-info">
+                    <h3 class="product-title">@phone.Name</h3>
+                    
+                    <div class="product-price">
+                        <span class="price-current">@phone.Price.ToString("N0") VNĐ</span>
+                        <span class="price-old">@oldPrice.ToString("N0") VNĐ</span>
+                    </div>
+                    
+                    <div class="product-tags">
+                        <span class="product-tag">@phone.Brand</span>
+                        <span class="product-tag">Còn @phone.Stock sp</span>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="id" value="@phone.Id" />
+                            <button type="submit" class="btn-add-cart" onclick="event.stopPropagation();">
+                                Thêm vào giỏ
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Features Section -->
+<div class="row mt-5 mb-4">
+    <div class="col-md-3 text-center mb-3">
+        <div class="p-3">
+            <div style="font-size: 48px;">🚚</div>
+            <h5>Miễn phí vận chuyển</h5>
+            <p class="text-muted">Đơn hàng từ 500k</p>
+        </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+        <div class="p-3">
+            <div style="font-size: 48px;">✅</div>
+            <h5>Bảo hành chính hãng</h5>
+            <p class="text-muted">12 tháng toàn quốc</p>
+        </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+        <div class="p-3">
+            <div style="font-size: 48px;">💳</div>
+            <h5>Thanh toán linh hoạt</h5>
+            <p class="text-muted">Trả góp 0% lãi suất</p>
+        </div>
+    </div>
+    <div class="col-md-3 text-center mb-3">
+        <div class="p-3">
+            <div style="font-size: 48px;">🎁</div>
+            <h5>Quà tặng hấp dẫn</h5>
+            <p class="text-muted">Nhiều ưu đãi đặc biệt</p>
+        </div>
+    </div>
+</div>
+
+

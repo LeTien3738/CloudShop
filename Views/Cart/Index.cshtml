@@ -1,0 +1,69 @@
+@model List<PhoneStore.Models.CartItem>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+}
+
+<h1>Giỏ hàng của bạn</h1>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <h4>Giỏ hàng trống</h4>
+        <p>Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
+        <a asp-controller="Phones" asp-action="Index" class="btn btn-primary">Tiếp tục mua sắm</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Tổng</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong>@item.Name</strong>
+                        </td>
+                        <td>@item.Price.ToString("N0") VNĐ</td>
+                        <td>
+                            <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.PhoneId" />
+                                <div class="input-group" style="width: 150px;">
+                                    <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control" />
+                                    <button type="submit" class="btn btn-outline-secondary">Cập nhật</button>
+                                </div>
+                            </form>
+                        </td>
+                        <td class="fw-bold">@((item.Price * item.Quantity).ToString("N0")) VNĐ</td>
+                        <td>
+                            <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@item.PhoneId" />
+                                <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-end"><strong>Tổng cộng:</strong></td>
+                    <td colspan="2" class="fw-bold text-primary fs-5">@ViewBag.Total.ToString("N0") VNĐ</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        <a asp-controller="Phones" asp-action="Index" class="btn btn-outline-secondary">Tiếp tục mua sắm</a>
+        <a asp-action="Checkout" class="btn btn-success btn-lg">💳 Thanh toán</a>
+    </div>
+}

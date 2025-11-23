@@ -1,0 +1,74 @@
+/* Natural Snow Animation Effects */
+.snow-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.snowflake {
+    position: absolute;
+    color: white;
+    user-select: none;
+    animation: snowfall linear infinite, sway ease-in-out infinite alternate;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 15px rgba(255, 255, 255, 0.5);
+    --sway-amount: 50px;
+}
+
+.snowflake::before {
+    content: '❄';
+}
+
+/* Hiệu ứng rơi xuống thẳng */
+@keyframes snowfall {
+    0% {
+        top: -10%;
+        opacity: 0;
+    }
+    5% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 1;
+    }
+    100% {
+        top: 110%;
+        opacity: 0;
+    }
+}
+
+/* Hiệu ứng lắc lư nhẹ sang trái phải */
+@keyframes sway {
+    0% {
+        transform: translateX(calc(var(--sway-amount) * -1));
+    }
+    100% {
+        transform: translateX(var(--sway-amount));
+    }
+}
+
+/* Tạo các biến thể tự nhiên hơn */
+.snowflake:nth-child(3n) {
+    animation-timing-function: linear, ease-in-out;
+}
+
+.snowflake:nth-child(4n) {
+    animation-timing-function: linear, cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.snowflake:nth-child(5n) {
+    animation-timing-function: linear, cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
+
+/* Một số bông tuyết mờ tạo chiều sâu */
+.snowflake:nth-child(7n) {
+    filter: blur(0.5px);
+}
+
+.snowflake:nth-child(11n) {
+    filter: blur(1px);
+}

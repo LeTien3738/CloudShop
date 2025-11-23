@@ -1,0 +1,73 @@
+@model IEnumerable<PhoneStore.Models.Phone>
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<div class="row mb-4">
+    <div class="col">
+        <h2>📱 Quản lý sản phẩm</h2>
+    </div>
+    <div class="col text-end">
+        <a asp-action="CreateProduct" class="btn btn-success">➕ Thêm sản phẩm</a>
+        <a asp-action="Index" class="btn btn-secondary">← Quay lại</a>
+    </div>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Thương hiệu</th>
+                        <th>Giá</th>
+                        <th>Tồn kho</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var phone in Model)
+                    {
+                        <tr>
+                            <td>@phone.Id</td>
+                            <td>@phone.Name</td>
+                            <td><span class="badge bg-info">@phone.Brand</span></td>
+                            <td class="text-primary fw-bold">@phone.Price.ToString("N0") VNĐ</td>
+                            <td>
+                                @if (phone.Stock > 10)
+                                {
+                                    <span class="badge bg-success">@phone.Stock</span>
+                                }
+                                else if (phone.Stock > 0)
+                                {
+                                    <span class="badge bg-warning">@phone.Stock</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Hết hàng</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="EditProduct" asp-route-id="@phone.Id" class="btn btn-sm btn-primary">✏️ Sửa</a>
+                                <form asp-action="DeleteProduct" asp-route-id="@phone.Id" method="post" class="d-inline" 
+                                      onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">🗑️ Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

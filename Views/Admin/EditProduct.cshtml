@@ -1,0 +1,76 @@
+@model PhoneStore.Models.Phone
+@{
+    ViewData["Title"] = "Chỉnh sửa sản phẩm";
+}
+
+<div class="row mb-4">
+    <div class="col">
+        <h2>✏️ Chỉnh sửa sản phẩm</h2>
+    </div>
+    <div class="col text-end">
+        <a asp-action="Products" class="btn btn-secondary">← Quay lại</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Tên sản phẩm *</label>
+                    <input asp-for="Name" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Thương hiệu *</label>
+                    <select asp-for="Brand" class="form-select" required>
+                        <option value="Apple">Apple</option>
+                        <option value="Samsung">Samsung</option>
+                        <option value="Xiaomi">Xiaomi</option>
+                        <option value="Oppo">Oppo</option>
+                        <option value="Vivo">Vivo</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Giá (VNĐ) *</label>
+                    <input asp-for="Price" type="number" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Số lượng tồn kho *</label>
+                    <input asp-for="Stock" type="number" class="form-control" required />
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Mô tả</label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Thông số kỹ thuật</label>
+                <input asp-for="Specifications" class="form-control" />
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Hình ảnh sản phẩm</label>
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <div class="mb-2">
+                        <img src="@Model.ImageUrl" alt="Current" style="max-width: 200px; max-height: 200px;" class="img-thumbnail" />
+                    </div>
+                }
+                <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                <small class="text-muted">Để trống nếu không đổi ảnh. Hoặc nhập URL:</small>
+                <input asp-for="ImageUrl" class="form-control mt-2" />
+            </div>
+            
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary btn-lg">💾 Cập nhật</button>
+            </div>
+        </form>
+    </div>
+</div>
