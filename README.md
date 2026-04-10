@@ -57,7 +57,7 @@ Hệ thống đã có sẵn 3 sản phẩm mẫu:
 - Samsung Galaxy S24 Ultra
 - Xiaomi 14 Pro
 
-## Phát triển thêm
+## Test Selenium
 
 Có thể mở rộng với các tính năng:
 - Đăng nhập/Đăng ký người dùng
