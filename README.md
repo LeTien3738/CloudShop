@@ -57,7 +57,7 @@ Hệ thống đã có sẵn 3 sản phẩm mẫu:
 - Samsung Galaxy S24 Ultra
 - Xiaomi 14 Pro
 
-## Test Selenium
+## Các tính năng mở rộng
 
 Có thể mở rộng với các tính năng:
 - Đăng nhập/Đăng ký người dùng
@@ -66,3 +66,15 @@ Có thể mở rộng với các tính năng:
 - Admin panel để quản lý sản phẩm
 - Đánh giá và bình luận sản phẩm
 - Sử dụng SQL Server thay vì In-Memory Database
+
+## Test Selenium
+- Mục đích
+Tự động hóa quá trình kiểm thử giao diện web (UI Testing)
+Kiểm tra luồng hoạt động của người dùng
+Giảm thời gian kiểm thử thủ công
+Phát hiện lỗi sớm trong quá trình phát triển
+- Công cụ sử dụng
+Selenium WebDriver
+Trình duyệt: Google Chrome (ChromeDriver)
+Ngôn ngữ: C# (.NET 6)
+IDE: Visual Studio / Visual Studio Code
